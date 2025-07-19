@@ -1,30 +1,29 @@
 #pragma once
-#include "contour.h"
 #include <string>
 #include <vector>
 
+/// Represents a single triangle in 3D space
 struct Triangle {
-    Point v1, v2, v3;
-    float zMin() const;
-    float zMax() const;
+    float normal[3];
+    float vertices[3][3];
 };
 
-class Model {
-public:
-    Model();
-
-    // Load a model from an ASCII STL file
-    bool loadFromSTL(const std::string& path);
-
-    // Slice the model at the given Z height and return cross-section contours
-    std::vector<Contour> sliceAtZ(float z) const;
-
-    // Return the highest Z value in the model for slicing limits
-    float getMaxZ() const;
-
-    // Return number of loaded triangles
-    size_t triangleCount() const;
-
-private:
+/// Represents a 3D model composed of STL triangle data
+struct Model {
     std::vector<Triangle> triangles;
+    bool isBinary = false;
+    std::string sourceFile;
+};
+
+/// ModelLoader is responsible for loading and parsing STL files into triangle data.
+class ModelLoader {
+public:
+    /**
+     * @brief Load and parse an STL file.
+     * Supports both ASCII and Binary STL.
+     *
+     * @param filename Path to the STL file
+     * @return Model struct with triangle data and metadata
+     */
+    static Model loadSTL(const std::string& filename);
 };

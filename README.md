@@ -1,16 +1,30 @@
 # S9Slicer
 
-**S9Slicer** is a professional-grade 3D slicing engine built in C++ for precision control of 3D printers, including support for multi-material setups, dynamic fan control, and G-code output. Developed with modularity, clarity, and production-readiness in mind.
+S9Slicer is a high-performance, open-source 3D printing slicer optimized for the Sunlu S9+ and advanced multi-material systems. Built from the ground up in C++ with Qt6 and Clipper2 integration.
 
 ## Features
-- STL model parsing and Z-slicing
-- Perimeter generation with ClipperLib offsetting
-- Grid-based infill, solid skin, and layer planning
-- G-code generation with fan control (SmartFanControl v3.2)
-- Modular architecture for advanced slicer logic
 
-## Repository Structure
-- `src/engine/`: Core slicing engine modules
-- `include/`: Public C++ headers
-- `external/`: Embedded dependencies (Clipper)
-- `docs/`: Project documentation
+- Full STL parsing (ASCII and Binary)
+- Dynamic G-code generation
+- Clipper2-powered perimeter generation
+- Layer planning with extrusion logic
+- Modular slicing engine with professional documentation
+- Designed for expansion: supports, infill, GUI coming in v0.8+
+
+## Build Instructions
+
+```bash
+mkdir build && cd build
+cmake ..
+make
+```
+
+## Run Example
+
+```bash
+./s9slicer path/to/model.stl
+```
+
+## License
+
+MIT License – with a request to credit for 3D printing or slicing-related use. See LICENSE file.

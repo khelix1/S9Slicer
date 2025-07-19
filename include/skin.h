@@ -1,30 +1,27 @@
 #pragma once
-#include <vector>
 #include "../contour.h"
+#include <vector>
 
-/// SkinGenerator is responsible for creating solid fill contours at top and bottom layers.
+/// SkinGenerator creates hatch line fills for top and bottom solid layers.
+/// The fill is based on the bounding box of the given outer contour.
+/// This generator is a simplified substitute until real clipping logic is applied.
 class SkinGenerator {
 public:
     /**
-     * @brief Generate top skin infill patterns within a given outer contour.
+     * @brief Generate horizontal hatch fill lines for the top skin layer.
+     * Fills the bounding box of the outer contour with horizontal lines spaced evenly.
      *
-     * This function returns contours representing dense solid fill for top layers,
-     * aligned to the surface of the model. Patterns may vary (lines, hatch, etc.).
-     * Clipping and offsetting are assumed to be handled elsewhere.
-     *
-     * @param outer A closed outer contour for the top surface.
-     * @return std::vector<Contour> Fill contours for top skin.
+     * @param outer The outer perimeter contour of the layer region to fill.
+     * @return std::vector<Contour> A vector of Contour objects representing fill lines.
      */
     static std::vector<Contour> generateTopSkin(const Contour& outer);
 
     /**
-     * @brief Generate bottom skin infill patterns within a given outer contour.
+     * @brief Generate horizontal hatch fill lines for the bottom skin layer.
+     * Uses the same logic as generateTopSkin for now.
      *
-     * Similar to top skin, this function produces dense fill contours that form the
-     * base layers of a printed object. Can optionally vary in pattern or overlap strategy.
-     *
-     * @param outer A closed outer contour for the bottom surface.
-     * @return std::vector<Contour> Fill contours for bottom skin.
+     * @param outer The outer perimeter contour of the layer region to fill.
+     * @return std::vector<Contour> A vector of Contour objects representing fill lines.
      */
     static std::vector<Contour> generateBottomSkin(const Contour& outer);
 };
