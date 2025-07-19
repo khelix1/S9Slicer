@@ -1,0 +1,1 @@
+// ClipperLib perimeter generator header
