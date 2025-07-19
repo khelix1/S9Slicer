@@ -11,3 +11,9 @@
 - Replaced placeholder STL loader with real ASCII STL parsing
 - Integrated real ClipperLib offset logic (Clipper2Lib)
 - All slicing engine modules now contain actual logic
+
+
+## v0.7.2 (2025-07-19)
+- Improved fan control logic using dynamic scaling based on extrusion rate
+- FanControlManager based on SmartFanControl v3.2
+- Ready for integration with G-code output

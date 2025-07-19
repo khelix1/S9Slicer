@@ -1,12 +1,10 @@
-
 #pragma once
 #include <vector>
 #include <string>
 
 struct FanCommand {
     int layer;
-    int speed; // 0-255 PWM
-    std::string comment;
+    int speed; // PWM 0–255
 };
 
 class FanControlManager {
@@ -14,16 +12,13 @@ public:
     FanControlManager();
 
     void registerExtrusionMove(double x, double y, double z, double e, double speed);
-    void registerTravelMove(double x, double y, double z, double speed);
-    void startNewLayer(int layer);
-    void finalizeLayer();
-    void applyFanLogic(std::vector<std::string>& gcode_lines);
+    void nextLayer(int layerNum);
+    int getCurrentFanSpeed() const;
+    std::vector<FanCommand> getFanCommands() const;
 
 private:
     int current_layer;
     double last_e;
     int current_fan_speed;
     std::vector<FanCommand> fan_commands;
-
-    void updateFanSpeed(int new_speed, const std::string& reason);
 };

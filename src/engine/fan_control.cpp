@@ -1,39 +1,33 @@
-
 #include "fan_control.h"
 #include <iostream>
+#include <cmath>
 
 FanControlManager::FanControlManager()
     : current_layer(0), last_e(0.0), current_fan_speed(0) {}
 
 void FanControlManager::registerExtrusionMove(double x, double y, double z, double e, double speed) {
-    if ((e - last_e) > 0.01) {
-        updateFanSpeed(255, "Extruding");
-    }
+    double extrusion_amount = e - last_e;
     last_e = e;
-}
 
-void FanControlManager::registerTravelMove(double x, double y, double z, double speed) {
-    updateFanSpeed(64, "Travel move");
-}
+    // Compute speed proportional to extrusion amount (clamped between 0 and 255)
+    int fan_speed = static_cast<int>(std::min(255.0, std::max(0.0, extrusion_amount * 10000.0)));
 
-void FanControlManager::startNewLayer(int layer) {
-    current_layer = layer;
-}
-
-void FanControlManager::finalizeLayer() {
-    fan_commands.push_back({current_layer, current_fan_speed, "Layer complete"});
-}
-
-void FanControlManager::updateFanSpeed(int new_speed, const std::string& reason) {
-    if (new_speed != current_fan_speed) {
-        current_fan_speed = new_speed;
-        std::cout << "; Fan speed change: " << new_speed << " due to " << reason << std::endl;
+    if (fan_speed != current_fan_speed) {
+        current_fan_speed = fan_speed;
+        std::cout << "[FanControl] Layer " << current_layer << ", E=" << e
+                  << ", Fan=" << current_fan_speed << "\n";
     }
 }
 
-void FanControlManager::applyFanLogic(std::vector<std::string>& gcode_lines) {
-    for (const auto& cmd : fan_commands) {
-        gcode_lines.push_back("; Applying fan command at layer " + std::to_string(cmd.layer));
-        gcode_lines.push_back("M106 S" + std::to_string(cmd.speed) + " ; " + cmd.comment);
-    }
+void FanControlManager::nextLayer(int layerNum) {
+    current_layer = layerNum;
+    fan_commands.push_back({layerNum, current_fan_speed});
+}
+
+int FanControlManager::getCurrentFanSpeed() const {
+    return current_fan_speed;
+}
+
+std::vector<FanCommand> FanControlManager::getFanCommands() const {
+    return fan_commands;
 }
