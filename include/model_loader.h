@@ -1,21 +1,20 @@
-
 #pragma once
-#include <vector>
+#include "contour.h"
 #include <string>
-#include <glm/glm.hpp>
+#include <vector>
 
 struct Triangle {
-    glm::vec3 normal;
-    glm::vec3 v1, v2, v3;
+    Point v1, v2, v3;
+    float zMin() const;
+    float zMax() const;
 };
 
-class STLLoader {
+class Model {
 public:
-    bool load(const std::string& filename);
-    const std::vector<Triangle>& getTriangles() const;
+    bool loadFromSTL(const std::string& path);
+    std::vector<Contour> sliceAtZ(float z) const;
+    float getMaxZ() const;
 
 private:
     std::vector<Triangle> triangles;
-    bool loadASCII(const std::string& filename);
-    bool loadBinary(const std::string& filename);
 };
